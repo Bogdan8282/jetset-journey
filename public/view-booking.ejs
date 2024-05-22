@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JetSet Journey</title>
+    <link rel="icon" type="image/svg+xml" href="/img/svg/logo-plane.svg">
+    <link rel="stylesheet" href="/styles/default.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <%- include('components/header.ejs') %>
+        <main class="simple-layout">
+            <h1>Список бронювань</h1>
+            <div>
+                <form action="/view-booking" method="get" class="medium-width">
+                    <label for="sort">Відсортувати за:</label>
+                    <select name="sort" id="sort" class="full-width">
+                        <option value="id">Користувацький ID</option>
+                        <option value="email">Пошта</option>
+                        <option value="timestamp">Дата і час</option>
+                        <option value="people_num">Число людей</option>
+                        <option value="hotel_name">Готель</option>
+                        <option value="tour_title">Тур</option>
+                    </select>
+                    <br><br>
+                    <label for="order">Порядок:</label>
+                    <select name="order" id="order" class="full-width">
+                        <option value="ASC">Зростаючий</option>
+                        <option value="DESC">Спадаючий</option>
+                    </select>
+                    <br><br>
+                    <input class="input-btn full-width" type="submit" value="Сортувати">
+                    <br><br>
+                </form>
+            </div>
+            <div class="bookings">
+                <% bookings.forEach(booking=> { %>
+                    <div class="booking-card">
+                        <p>ID: <%= booking.id %>
+                        </p>
+                        <p>Пошта: <%= booking.email %>
+                        </p>
+                        <p>Дата і час: <%= booking.timestamp %>
+                        </p>
+                        <p>Число людей: <%= booking.people_num %>
+                        </p>
+                        <p>Готель: <%= booking.hotel_name %>
+                        </p>
+                        <p>Тур: <%= booking.tour_title %>
+                        </p>
+                    </div>
+                    <form action="/delete-booking/<%= booking.id %>?_method=DELETE" method="POST">
+                        <button type="submit">Видалити</button>
+                    </form>
+                    <br><br>
+                    <% }); %>
+            </div>
+            <form class="form-btn" action="/view-hotels" method="get">
+                <input class="input-btn medium-width" type="submit" value="Переглянути готелі">
+            </form>
+            <br>
+            <form class="form-btn" action="/tours" method="get">
+                <input class="input-btn medium-width" type="submit" value="Назад">
+            </form>
+        </main>
+
+        <%- include('components/footer.ejs') %>
+
+            <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+            <script src="/js/slick.min.js"></script>
+            <script src="/js/script.js"></script>
+</body>
+
+</html>

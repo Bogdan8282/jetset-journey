@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JetSet Journey</title>
+    <link rel="icon" type="image/svg+xml" href="/img/svg/logo-plane.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/styles/default.css">
+</head>
+
+<body>
+    <%- include('components/header.ejs') %>
+
+    <main class="simple-layout">
+        <h1>Додати новий тур</h1>
+
+        <form action="/tours/add/new" method="post" class="medium-width">
+            <label for="title">Заголовок:</label>
+            <input type="text" id="title" class="full-width" name="title" required>
+            <br><br>
+
+            <div class="textarea-label">
+                <label for="description">Опис:</label>
+                <textarea id="description" class="full-width" name="description" required></textarea>
+            </div>
+            <br>
+
+            <label for="city">Місто:</label>
+            <input type="text" id="city" class="full-width" name="city" required>
+            <br><br>
+
+            <label for="price">Вартість:</label>
+            <input type="number" id="price" class="full-width" name="price" required>
+            <br><br>
+
+            <label for="category">Категорія:</label>
+            <select id="category" class="full-width" name="category" required>
+                <option value="Historical">Історичний</option>
+                <option value="Gastronomic">Гастрономічний</option>
+                <option value="Cultural">Культруний</option>
+                <option value="Natural">Природничий</option>
+            </select>
+            <br><br>
+
+            <input class="input-btn full-width" type="submit" value="Додати">
+        </form>
+        <br>
+        <form class="form-btn" action="/tours" method="get">
+            <input class="medium-width" type="submit" value="Назад до списку">
+        </form>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="/js/slick.min.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+
+</html>

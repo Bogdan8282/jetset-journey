@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JetSet Journey</title>
+    <link rel="icon" type="image/svg+xml" href="/img/svg/logo-plane.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+
+<body>
+    <%- include('components/header.ejs') %>
+
+    <main class="main">
+        <section id="faq">
+            <div class="wrapper">
+                <div class="faq__wrap">
+                    <div class="faq-item">
+                        <h3 class="faq-question">Які послуги пропонує ваше агентство?</h3>
+                        <p class="faq-answer">Наше агентство пропонує широкий спектр послуг, включно з бронюванням турів та страховкою.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question">Як мені забронювати тур?</h3>
+                        <p class="faq-answer">Ми можете забронювати тур прямо на сайті, подзвонити нам або завітати до нашого офісу.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question">Які є способи оплати?</h3>
+                        <p class="faq-answer">Ви можете заплатити нам через електронний переказ або готівкою.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question">Як мені зв'язатись з вашою службою підтримки?</h3>
+                        <p class="faq-answer">Ви можете зв'язатись зі службою підтримки, перейшовши на сторінку <a href="/contact-us">Зворотнього зв'язку</a> та заповнивши форму.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <%- include('components/footer.ejs') %>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="/js/slick.min.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+
+</html>

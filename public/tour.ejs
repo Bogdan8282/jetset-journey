@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        JetSet Journey
+    </title>
+    <link rel="icon" type="image/svg+xml" href="/img/svg/logo-plane.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/styles/default.css">
+    <script src="/js/calculatePrice.js" defer></script>
+</head>
+
+<body>
+    <%- include('components/header.ejs') %>
+
+    <main class="simple-layout">
+        <h1>
+            <%= tour.title %>
+        </h1>
+        <p>
+            <%= tour.description %>
+        </p>
+        <p>Місто: <%= tour.city %>
+        </p>
+        <p>Вартість: <span id="tourPrice">
+                <%= tour.price %>
+            </span> грн</p>
+        
+            <br>
+        <form action="/order" method="post" class="medium-width">
+            <label for="hotel">Оберіть готель:</label>
+            <select id="hotel" class="full-width" name="hotel" onchange="calculatePrice()">
+                <option value="">Без готелю</option>
+                <% hotels.forEach(hotel=> { %>
+                    <% if (hotel.city===tour.city) { %>
+                        <option value="<%= hotel.id %>,<%= hotel.daily_price %>">
+                            <%= hotel.name %> - <%= hotel.daily_price %> грн/день
+                        </option>
+                        <% } %>
+                            <% }); %>
+            </select>
+            <br><br>
+
+            <label for="peopleNum">Число людей:</label>
+            <select id="peopleNum" class="full-width" name="peopleNum" onchange="calculatePrice()">
+                <option value="1">1</option>
+                <option value="2-4">2-4</option>
+                <option value="5+">5+</option>
+            </select>
+            <br><br>
+
+            <p id="totalPrice">Приблизна вартість: <%= tour.price %> грн</p>
+            <br>
+            <input type="hidden" name="tourId" value="<%= tour.id %>">
+            <input type="submit" value="Замовити" class="input-btn full-width">
+        </form>
+        <br>
+        <form class="form-btn" action="/tours" method="get">
+            <input class="medium-width" type="submit" value="Назад до списку">
+        </form>
+        <br>
+        <br>
+    </main>
+
+    <%- include('components/footer.ejs') %>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="/js/slick.min.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+
+</html>

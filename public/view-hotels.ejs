@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JetSet Journey</title>
+    <link rel="icon" type="image/svg+xml" href="/img/svg/logo-plane.svg">
+    <link rel="stylesheet" href="/styles/default.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <%- include('components/header.ejs') %>
+    
+    <main class="simple-layout">
+        <h1>Список готелів</h1>
+        <div>
+            <form action="/view-hotels" method="get" class="medium-width">
+                <label for="sort">Відсортувати за:</label>
+                <select name="sort" id="sort" class="full-width">
+                    <option value="id">ID</option>
+                    <option value="name">Назва готелю</option>
+                    <option value="phone">Телефон</option>
+                    <option value="city">Місто</option>
+                    <option value="daily_price">Денна вартість</option>
+                </select>
+                <br><br>
+                <label for="order">Порядок:</label>
+                <select name="order" id="order" class="full-width">
+                    <option value="ASC">Зростаючий</option>
+                    <option value="DESC">Спадаючий</option>
+                </select>
+                <br><br>
+                <input class="input-btn full-width" type="submit" value="Сортувати">
+            </form>
+            <br><br>
+        </div>
+        <div class="hotels">
+            <% hotels.forEach(hotel=> { %>
+                <div class="hotel-card">
+                    <p>ID: <%= hotel.id %>
+                    </p>
+                    <p>Назва: <%= hotel.name %>
+                    </p>
+                    <p>Телефон: <%= hotel.phone %>
+                    </p>
+                    <p>Місто: <%= hotel.city %>
+                    </p>
+                    <p>Денна вартість: <%= hotel.daily_price %> грн</p>
+                </div>
+                <br><br>
+                <% }); %>
+        </div>
+        <form class="form-btn" action="/view-booking" method="get">
+            <input type="submit" value="Переглянути бронювання">
+        </form>
+        <br>
+        <form class="form-btn" action="/tours" method="get">
+            <input class="input-btn" type="submit" value="Назад">
+        </form>
+    </main>
+
+        <%- include('components/footer.ejs') %>
+
+            <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+            <script src="/js/slick.min.js"></script>
+            <script src="/js/script.js"></script>
+</body>
+
+</html>

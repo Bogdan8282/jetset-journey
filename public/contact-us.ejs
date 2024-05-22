@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JetSet Journey</title>
+    <link rel="icon" type="image/svg+xml" href="/img/svg/logo-plane.svg">
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <%- include('components/header.ejs') %>
+
+    <main class="main">
+        <section id="contact">
+            <div class="wrapper">
+                <div class="contact__wrap">
+                    <form id="contact-form" action="/submit-form" method="post">
+                        <div class="form-group__inline">
+                            <label for="name">Тема:</label>
+                            <input type="text" id="topic" class="form-input" name="topic" required>
+                        </div>
+                        <div class="form-group__big">
+                            <label for="message">Повідомлення:</label>
+                            <textarea id="message" class="form-input" name="message" rows="4" minlength="10"
+                                required></textarea>
+                        </div>
+                        <button type="submit" class="form-btn">Відправити</button>
+                        <% if (isAdmin) { %>
+                            <a href="/view-messages" class="form-btn" style="font-size: 13px;">Переглянути</a>
+                            <% } %>
+                    </form>
+                    <div class="contact-info">
+                        <h2>Зворотній зв'язок</h2>
+                        <p>Заповніть форму щоб зв'язатись з нами. Ми відповімо на усі ваші питання та допоможемо з організацією вашої поїздки.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <%- include('components/footer.ejs') %>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/slick.min.js"></script>
+    <script src="/js/contactForm.js"></script>
+</body>
+
+</html>

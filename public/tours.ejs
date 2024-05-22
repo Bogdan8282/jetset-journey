@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JetSet Journey</title>
+    <link rel="icon" type="image/svg+xml" href="/img/svg/logo-plane.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles/default.css">
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const isAdmin = JSON.parse(document.querySelector('.tours').getAttribute('data-isadmin'));
+
+            if (isAdmin) {
+                const deleteForms = document.querySelectorAll('.delete-form');
+                deleteForms.forEach(form => {
+                    const deleteButton = document.createElement('input');
+                    deleteButton.type = 'submit';
+                    deleteButton.value = 'Видалити';
+                    form.appendChild(deleteButton);
+                });
+
+                const addTourForm = document.querySelector('.add-tour-form');
+                const addTourButton = document.createElement('input');
+                addTourButton.type = 'submit';
+                addTourButton.value = 'Додати тур';
+                addTourForm.appendChild(addTourButton);
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <%- include('components/header.ejs') %>
+
+    <main class="simple-layout">
+        <h1>Список турів</h1>
+        <div class="tours" data-isadmin="<%= isAdmin %>">
+            <% tours.forEach(tour=> { %>
+                <div class="tour-card">
+                    <h2>
+                        <%= tour.title %>
+                    </h2>
+                    <p>
+                        <%= tour.description.split(' ').slice(0, 8).join(' ') + ' ...' %>
+                    </p>
+                    <p>Місто: <%= tour.city %>
+                    </p>
+                    <p>Ціна: <%= tour.price %> грн</p>
+                    <form class="form-btn view-form" action="/tours/<%= tour.id %>" method="get">
+                        <input type="submit" value="Переглянути">
+                    </form>
+                </div>
+                <form class="delete-form form-btn" action="/tours/delete/<%= tour.id %>" method="get">
+                </form>
+                <br><br>
+                <% }); %>
+        </div>
+        <form class="add-tour-form form-btn" action="/tours/add/new" method="get">
+        </form>
+        <br>
+        <% if (isAdmin) { %>
+            <form class="form-btn" action="/view-booking" method="get">
+                <input type="submit" value="Переглянути бронювання">
+            </form>
+            <br>
+            <form class="form-btn" action="/view-hotels" method="get">
+                <input type="submit" value="Переглянути готелі">
+            </form>
+        <% } %>
+    </main>
+
+    <%- include('components/footer.ejs') %>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="/js/slick.min.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+
+</html>

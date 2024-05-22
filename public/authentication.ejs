@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JetSet Journey</title>
+    <link rel="icon" type="image/svg+xml" href="/img/svg/logo-plane.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/styles/default.css">
+</head>
+
+<body>
+    <%- include('components/header.ejs') %>
+
+    <main class="simple-layout">
+        <h1>Реєстрація</h1>
+        <br>
+        <form action="/register" method="post">
+            <label for="reg_username">Ім'я:</label><br>
+            <input type="text" id="reg_username" name="reg_username" required><br><br>
+            <label for="email">Електронна пошта:</label><br>
+            <input type="email" id="reg_email" name="email" required><br><br>
+            <label for="reg_password">Пароль:</label><br>
+            <input type="password" id="reg_password" name="reg_password" required><br><br>
+            <button type="submit">Зареєструватись</button>
+        </form>
+        <br><br>
+        <h2>Вхід</h2>
+        <br>
+        <form action="/login" method="post">
+            <label for="login_username">Ім'я:</label><br>
+            <input type="text" id="login_username" name="login_username" required><br><br>
+            <label for="login_password">Пароль:</label><br>
+            <input type="password" id="login_password" name="login_password" required><br><br>
+            <button type="submit">Увійти</button>
+        </form>
+        <br><br>
+        <% if (authenticated) { %>
+            <form action="/logout" method="post">
+                <button type="submit">Вийти з аккаунту</button>
+            </form>
+        <% } %>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="/js/slick.min.js"></script>
+    <script src="/js/contactForm.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+
+</html>
