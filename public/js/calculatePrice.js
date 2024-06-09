@@ -17,10 +17,10 @@ function calculatePrice() {
       additionalPrice = 0;
       break;
     case "2-4":
-      additionalPrice = 2;
+      additionalPrice = 3;
       break;
     case "5+":
-      additionalPrice = 4;
+      additionalPrice = 6;
       break;
     default:
       additionalPrice = 0;

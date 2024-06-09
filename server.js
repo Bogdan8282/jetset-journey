@@ -5,9 +5,9 @@ const mysql = require("mysql2");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
-const MySQLStore = require('express-mysql-session')(session);
+const MySQLStore = require("express-mysql-session")(session);
 const methodOverride = require("method-override");
-require('dotenv').config();
+require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -129,7 +129,7 @@ app.post("/register", async (req, res) => {
                 <p><a href="http://localhost:3000/confirmation?email=${regEmail}">Підтвердити</a></p>
                 <p>Якщо ви не очікували на це повідомлення, ігноруйте його.</p>
             `,
-        };
+      };
       transporter.sendMail(message, (err, info) => {
         if (err) {
           console.log("Error occurred. " + err.message);
@@ -190,9 +190,9 @@ app.get("/tours", (req, res) => {
   if (!req.session.authenticated || !req.session) {
     return res.redirect("/authentication");
   }
-  
+
   const isAdmin = req.session.isAdmin || false;
-  
+
   db.query("SELECT * FROM tours", (err, results) => {
     if (err) throw err;
     res.render("tours.ejs", { tours: results, isAdmin: isAdmin });
@@ -204,25 +204,21 @@ app.get("/tours/:id", (req, res) => {
     return res.redirect("/authentication");
   }
   const tourId = parseInt(req.params.id);
-  db.query(
-    "SELECT * FROM tours WHERE id = ?",
-    [tourId],
-    (err, tour) => {
-      if (err) throw err;
-      if (!tour[0]) {
-        res.status(404).send("Tour not found");
-        return;
-      }
-      db.query(
-        "SELECT * FROM hotels WHERE city = ?",
-        [tour[0].city],
-        (err, hotels) => {
-          if (err) throw err;
-          res.render("tour.ejs", { tour: tour[0], hotels: hotels });
-        }
-      );
+  db.query("SELECT * FROM tours WHERE id = ?", [tourId], (err, tour) => {
+    if (err) throw err;
+    if (!tour[0]) {
+      res.status(404).send("Tour not found");
+      return;
     }
-  );
+    db.query(
+      "SELECT * FROM hotels WHERE city = ?",
+      [tour[0].city],
+      (err, hotels) => {
+        if (err) throw err;
+        res.render("tour.ejs", { tour: tour[0], hotels: hotels });
+      }
+    );
+  });
 });
 
 app.get("/tours/delete/:id", (req, res) => {
@@ -230,14 +226,10 @@ app.get("/tours/delete/:id", (req, res) => {
     return res.redirect("/authentication");
   }
   const tourId = parseInt(req.params.id);
-  db.query(
-    "DELETE FROM tours WHERE id = ?",
-    [tourId],
-    (err, result) => {
-      if (err) throw err;
-      res.redirect("/tours");
-    }
-  );
+  db.query("DELETE FROM tours WHERE id = ?", [tourId], (err, result) => {
+    if (err) throw err;
+    res.redirect("/tours");
+  });
 });
 
 app.get("/tours/add/new", (req, res) => {
@@ -248,10 +240,10 @@ app.get("/tours/add/new", (req, res) => {
 });
 
 app.get("/view-booking", isAdminCheck, (req, res) => {
-    let sortBy = req.query.sort || "id";
-    let sortOrder = req.query.order || "ASC";
+  let sortBy = req.query.sort || "id";
+  let sortOrder = req.query.order || "ASC";
 
-    const sql = `
+  const sql = `
         SELECT booking.*, users.email, hotels.name AS hotel_name, tours.title AS tour_title
         FROM booking 
         INNER JOIN users_booking ON booking.id = users_booking.booking_id 
@@ -261,50 +253,50 @@ app.get("/view-booking", isAdminCheck, (req, res) => {
         ORDER BY ${sortBy} ${sortOrder}
     `;
 
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error("Error fetching data from database:", err);
-            return res.status(500).send("Internal server error");
-        }
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Error fetching data from database:", err);
+      return res.status(500).send("Internal server error");
+    }
 
-        res.render("view-booking.ejs", { bookings: results });
-    });
+    res.render("view-booking.ejs", { bookings: results });
+  });
 });
 
 app.get("/view-hotels", isAdminCheck, (req, res) => {
-    let sortBy = req.query.sort || "id";
-    let sortOrder = req.query.order || "ASC";
+  let sortBy = req.query.sort || "id";
+  let sortOrder = req.query.order || "ASC";
 
-    const sql = `SELECT * FROM hotels ORDER BY ${sortBy} ${sortOrder}`;
+  const sql = `SELECT * FROM hotels ORDER BY ${sortBy} ${sortOrder}`;
 
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error("Error fetching data from database:", err);
-            return res.status(500).send("Internal server error");
-        }
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Error fetching data from database:", err);
+      return res.status(500).send("Internal server error");
+    }
 
-        res.render("view-hotels.ejs", { hotels: results });
-    });
+    res.render("view-hotels.ejs", { hotels: results });
+  });
 });
 
 app.get("/view-messages", isAdminCheck, (req, res) => {
-    let sortBy = req.query.sort || "id";
-    let sortOrder = req.query.order || "ASC";
+  let sortBy = req.query.sort || "id";
+  let sortOrder = req.query.order || "ASC";
 
-    const sql = `SELECT messages.*, users.email 
+  const sql = `SELECT messages.*, users.email 
                 FROM messages 
                 INNER JOIN users 
                 ON messages.user_id = users.id
                 ORDER BY ${sortBy} ${sortOrder}`;
 
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error("Error fetching messages:", err);
-            return res.status(500).send("Internal server error");
-        }
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Error fetching messages:", err);
+      return res.status(500).send("Internal server error");
+    }
 
-        res.render("view-messages.ejs", { messages: results });
-    });
+    res.render("view-messages.ejs", { messages: results });
+  });
 });
 
 app.post("/tours/add/new", (req, res) => {
@@ -321,56 +313,71 @@ app.post("/tours/add/new", (req, res) => {
 });
 
 app.post("/order", (req, res) => {
-    const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    const { tourId, hotel, peopleNum } = req.body;
-    
+  const currentDate = new Date();
+  const twoDaysAgoDate = new Date(currentDate);
+  twoDaysAgoDate.setDate(currentDate.getDate() - 2);
+
+  const userId = req.session.userId;
+  const { tourId, hotel, peopleNum } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ error: "Користувач не ідентифікований" });
+  }
+
+  const sql = "SELECT * FROM booking WHERE user_id = ? AND timestamp > ?";
+  db.query(sql, [userId, twoDaysAgoDate], (err, results) => {
+    if (err) {
+      console.error("Помилка взаємодії з базою даних:", err);
+      return res.status(500).json({ error: "Помилка сервера" });
+    }
+
+    if (results.length > 0) {
+      return res.status(400).json({
+        error:
+          "Ви вже замовили тур протягом останніх двох днів. Спробуйте ще раз пізніше.",
+      });
+    }
+
     let hotelId = null;
     if (hotel) {
-        const [selectedHotelId, dailyPrice] = hotel.split(",");
-        hotelId = parseInt(selectedHotelId);
+      const [selectedHotelId, dailyPrice] = hotel.split(",");
+      hotelId = parseInt(selectedHotelId);
     }
 
     const bookingData = [
-        currentDate,
-        peopleNum,
-        hotelId,
-        parseInt(tourId),
+      currentDate.toISOString().slice(0, 19).replace("T", " "),
+      peopleNum,
+      hotelId,
+      parseInt(tourId),
     ];
 
-    const insertBookingSql = "INSERT INTO booking (timestamp, people_num, hotel_id, tour_id) VALUES (?, ?, ?, ?)";
-    
-    db.query(insertBookingSql, bookingData, (err, result) => {
-        if (err) {
-            console.error("Error inserting data into booking table:", err);
-            return res.status(500).send("Internal server error");
-        }
+    const insertBookingSql =
+      "INSERT INTO booking (timestamp, people_num, hotel_id, tour_id, user_id) VALUES (?, ?, ?, ?, ?)";
 
-        const bookingId = result.insertId;
+    db.query(insertBookingSql, [...bookingData, userId], (err, result) => {
+      if (err) {
+        console.error("Помилка вставки даних у таблицю бронювання:", err);
+        return res.status(500).json({ error: "Помилка сервера" });
+      }
 
-        const userId = req.session.userId;
+      const bookingId = result.insertId;
 
-        const insertUserBookingSql = "INSERT INTO users_booking (user_id, booking_id) VALUES (?, ?)";
+      console.log("Дані бронювання вставлені в MySQL з ID:", bookingId);
+      console.log("ID користувача:", userId);
 
-        db.query(insertUserBookingSql, [userId, bookingId], (err, result) => {
-            if (err) {
-                console.error("Error inserting data into users_booking table:", err);
-                return res.status(500).send("Internal server error");
-            }
-
-            console.log("Booking data inserted into MySQL with ID:", bookingId);
-            console.log("User ID:", userId);
-
-            res.send('<script>alert("Ваше замовлення прийнято. Ми з вами зв\'яжемось."); window.location.href="/tours";</script>');
-        });
+      res.json({ success: "Ваше замовлення прийнято. Ми з вами зв'яжемось." });
     });
+  });
 });
 
 app.get("/authentication", (req, res) => {
-  res.render("authentication.ejs", { authenticated: req.session.authenticated });
+  res.render("authentication.ejs", {
+    authenticated: req.session.authenticated,
+  });
 });
 
 app.get("/booking", (req, res) => {
-  res.render("booking.ejs", { });
+  res.render("booking.ejs", {});
 });
 
 app.get("/contact-us", (req, res) => {
@@ -380,7 +387,7 @@ app.get("/contact-us", (req, res) => {
 
   const isAdmin = req.session && req.session.isAdmin;
 
-  res.render('contact-us.ejs', { isAdmin: isAdmin });
+  res.render("contact-us.ejs", { isAdmin: isAdmin });
 });
 
 app.get("/faq", (req, res) => {
@@ -389,37 +396,57 @@ app.get("/faq", (req, res) => {
 
 app.post("/submit-form", (req, res) => {
   const { topic, message } = req.body;
-
-  if (!topic || !message) {
-    return res.status(400).send("Будь ласка, заповніть усі поля");
-  }
-
   const userId = req.session.userId;
 
-  if (!userId) {
-    return res.status(400).send("Користувач не ідентифікований");
+  if (!topic || !message) {
+    return res.status(400).json({ error: "Будь ласка, заповніть усі поля" });
   }
 
-  const sql = "INSERT INTO messages (topic, message, user_id) VALUES (?, ?, ?)";
-  db.query(sql, [topic, message, userId], (err, result) => {
+  if (!userId) {
+    return res.status(400).json({ error: "Користувач не ідентифікований" });
+  }
+
+  const currentDate = new Date();
+  const yesterdayDate = new Date(currentDate);
+  yesterdayDate.setDate(currentDate.getDate() - 1);
+
+  const sql = "SELECT * FROM messages WHERE user_id = ? AND created_at > ?";
+  db.query(sql, [userId, yesterdayDate], (err, results) => {
     if (err) {
-      console.error("Error inserting data into database:", err);
-      return res.status(500).send("Internal server error");
+      console.error("Помилка взаємодії з базою даних:", err);
+      return res.status(500).json({ error: "Помилка сервера" });
     }
+
+    if (results.length > 0) {
+      return res.status(400).json({
+        error:
+          "Ви вже відправили повідомлення сьогодні. Спробуйте ще раз завтра.",
+      });
+    }
+
+    const insertSql =
+      "INSERT INTO messages (topic, message, user_id) VALUES (?, ?, ?)";
+    db.query(insertSql, [topic, message, userId], (err, result) => {
+      if (err) {
+        console.error("Помилка взаємодії з базою даних:", err);
+        return res.status(500).json({ error: "Помилка сервера" });
+      }
+      res.status(200).json({ success: "Повідомлення відправлено успішно." });
+    });
   });
 });
 
 app.post("/logout", (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error("Error destroying session: ", err);
-            return res.status(500).send("Error destroying session");
-        }
-        if (req.session && req.session.authenticated) {
-            delete req.session.authenticated;
-        }
-        res.redirect("/authentication");
-    });
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session: ", err);
+      return res.status(500).send("Виникла помилка :(");
+    }
+    if (req.session && req.session.authenticated) {
+      delete req.session.authenticated;
+    }
+    res.redirect("/authentication");
+  });
 });
 
 app.delete("/delete-message/:id", isAdminCheck, (req, res) => {
@@ -463,7 +490,7 @@ app.delete("/delete-booking/:id", isAdminCheck, (req, res) => {
 
 function isAdminCheck(req, res, next) {
   if (!req.session || !req.session.isAdmin) {
-    return res.status(403).send('Доступ заборонено');
+    return res.status(403).send("Доступ заборонено");
   }
   next();
 }
